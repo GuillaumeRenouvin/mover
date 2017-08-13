@@ -1,6 +1,5 @@
-// @flow
 import { StyleSheet, Text, View, Image } from 'react-native';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import themoviedb from "mover/src/services/themoviedb";
 
 const styles = StyleSheet.create({

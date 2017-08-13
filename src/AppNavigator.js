@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { addNavigationHelpers, TabNavigator, StackNavigator } from "react-navigation";
 import * as Pages from "mover/src/pages";
 import { Header } from "mover/src/components";
+import { getCurrentRoute } from "mover/src/services/navigation";
 
 export const AppNavigator = StackNavigator({
   tab: {
@@ -15,7 +16,26 @@ export const AppNavigator = StackNavigator({
         screen: Pages.Settings,
       },
       movies: {
-        screen: Pages.Movies,
+        screen: StackNavigator({
+          movies: {
+            screen: Pages.Movies,
+          },
+          movieDetail: {
+            screen: Pages.MovieDetail,
+          },
+        }, {
+          headerMode: 'screen',
+          navigationOptions: {
+            headerStyle: {
+              backgroundColor: 'white',
+              shadowRadius: 0,
+              shadowOffset: {
+                  height: 0,
+              },
+            },
+            headerTintColor: 'black'
+          }
+        })
       }
     }, {
       initialRouteName: 'home',
@@ -26,7 +46,10 @@ export const AppNavigator = StackNavigator({
 }, {
   navigationOptions: {
     header: ({ navigation }) => {
-      return <Header navigation={navigation} />;
+      // DEPRECATED
+      return getCurrentRoute(navigation.state) != 'movieDetail' ?
+        <Header navigation={navigation} /> :
+        null;
     },
   },
 });

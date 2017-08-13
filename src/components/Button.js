@@ -1,6 +1,5 @@
-// @flow
-
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from "prop-types";
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 
 import appStyle from 'mover/src/appStyle';

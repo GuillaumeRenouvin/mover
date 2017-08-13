@@ -13,7 +13,7 @@ class Settings extends Component {
 }
 
 Settings.navigationOptions = {
-  tabBarVisible: false
+  tabBarVisible: false,
 };
 
 export default Settings;

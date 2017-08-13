@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from "prop-types";
 import { TouchableOpacity, StyleSheet, Text, View, Image } from 'react-native';
 import appStyle from 'mover/src/appStyle';
 import themoviedb from "mover/src/services/themoviedb";
@@ -61,7 +62,7 @@ class ListItem extends Component {
         onDelete={() => this.props.onDelete()}
         onAdd={() => this.props.onAdd()}
       >
-        <TouchableOpacity onPress={() => {}} style={styles.container} >
+        <TouchableOpacity onPress={() => this.props.openMovie()} style={styles.container} >
           <View style={styles.iconContainer} >
             <Image style={styles.thumbnail} source={{uri: themoviedb.getCoverUrl(this.props.movie.poster_path)}} />
           </View>
@@ -81,7 +82,8 @@ class ListItem extends Component {
 ListItem.PropsType = {
   movie: PropTypes.object.isRequired,
   onDelete: PropTypes.func.isRequired,
-  onAdd: PropTypes.func
+  onAdd: PropTypes.func,
+  openMovie: PropTypes.func.isRequired
 };
 
 export default ListItem;

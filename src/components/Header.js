@@ -1,6 +1,7 @@
-import React, { Component, propTypes } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { NativeModules, StyleSheet, View, LayoutAnimation, Dimensions } from "react-native";
+import { getCurrentRoute } from "mover/src/services/navigation";
 import { HeaderIcon } from ".";
 
 const { UIManager } = NativeModules;
@@ -32,25 +33,38 @@ class Header extends Component {
     marginLeftContainer: 0
   }
 
+  componentWillMount() {
+    // DEPRECATED
+    if(getCurrentRoute(this.props.navigation.state) === 'movies') {
+      this.setState({
+        selectedPage: 'movies'
+      });
+      this.animateHeader('movies');
+    }
+  }
+
   selectPage(page) {
     if(page != this.state.selectedPage) {
       this.setState({
         selectedPage: page
       });
       this.props.navigation.navigate(page);
-      LayoutAnimation.easeInEaseOut();
-
-      const marginLeftContainer = 0
-      switch(page) {
-        case "settings" :
-          marginLeftContainer = Screen.width / 2 - 25;
-          break;
-        case "movies" :
-          marginLeftContainer = -Screen.width / 2 + 25;
-          break;
-      }
-      this.setState({marginLeftContainer})
+      this.animateHeader(page);
     }
+  }
+
+  animateHeader(page) {
+    LayoutAnimation.easeInEaseOut();
+    let marginLeftContainer = 0
+    switch(page) {
+      case "settings" :
+        marginLeftContainer = Screen.width / 2 - 25;
+        break;
+      case "movies" :
+        marginLeftContainer = -Screen.width / 2 + 25;
+        break;
+    }
+    this.setState({marginLeftContainer})
   }
 
   isSelectedPage(page) {
@@ -77,7 +91,7 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  navigation: PropTypes.object,
+  navigation: PropTypes.object.isRequired,
 };
 
 export default Header;

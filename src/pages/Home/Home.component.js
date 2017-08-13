@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from "prop-types";
 import { StyleSheet, Text, View } from 'react-native';
 import { Page } from 'mover/src/components';
 import appStyle from 'mover/src/appStyle';
@@ -53,11 +54,11 @@ class Home extends Component {
 }
 
 Home.navigationOptions = {
-  tabBarVisible: false
+  tabBarVisible: false,
 };
 
-type PropsType = {
-  navigation: any,
+Home.PropTypes = {
+  navigation: PropTypes.object.isRequired,
   movies: PropTypes.array.isRequired,
   loadMovies: PropTypes.array.isRequired,
   addUserMovie: PropTypes.func.isRequired,

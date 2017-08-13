@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from "prop-types";
 import { StyleSheet, Text, ScrollView } from 'react-native';
 import { Header, Page } from 'mover/src/components';
 import { ListItem } from 'mover/src/pages/Movies/components';
@@ -28,6 +29,7 @@ class Movies extends Component {
                 movie={movie}
                 onDelete={() => this.props.removeUserMovie(movie)}
                 onAdd={() => this.props.addUserSeenMovie(movie)}
+                openMovie={() => this.props.navigation.navigate('movieDetail', {movie})}
               />
             ))
           }
@@ -39,6 +41,7 @@ class Movies extends Component {
                 key={index}
                 movie={movie}
                 onDelete={() => this.props.removeUserSeenMovie(movie)}
+                openMovie={() => this.props.navigation.navigate('movieDetail', {movie})}
               />
             ))
           }
@@ -49,10 +52,12 @@ class Movies extends Component {
 }
 
 Movies.navigationOptions = {
-  tabBarVisible: false
+  tabBarVisible: false,
+  header: () => null
 };
 
-type PropsType = {
+Movies.PropTypes = {
+  navigation: PropTypes.object.isRequired,
   movies: PropTypes.array.isRequired,
   seenMovies: PropTypes.array.isRequired,
   removeUserMovie: PropTypes.func.isRequired,
