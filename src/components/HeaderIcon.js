@@ -1,17 +1,38 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Text, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, TouchableOpacity, Animated } from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+
+const styles = StyleSheet.create({
+  iconStyle: {
+    fontSize: 20,
+  }
+});
 
 class HeaderIcon extends Component {
   render() {
-    const iconStyle = {
-      height: this.props.isSelected ? 30 : 20,
-      width: this.props.isSelected ? 30 : 20,
-      resizeMode: 'contain'
-    }
     return (
       <TouchableOpacity onPress={() => this.props.onPress()} >
-        <Image style={iconStyle} source={this.props.icon} />
+        <AnimatedIcon
+          name={this.props.iconName}
+          style={[
+            styles.iconStyle,
+            {
+              transform: [{
+                scale: this.props.position.interpolate({
+                  inputRange: this.props.inputRange,
+                  outputRange: this.props.outputRange,
+                }),
+              }],
+              color: this.props.position.interpolate({
+                inputRange: this.props.inputRange,
+                outputRange: this.props.outputRangeColor,
+              })
+            }
+          ]}
+        />
       </TouchableOpacity>
     );
   }
@@ -19,12 +40,11 @@ class HeaderIcon extends Component {
 
 HeaderIcon.propTypes = {
   onPress: PropTypes.func.isRequired,
-  icon: PropTypes.number.isRequired,
-  isSelected: PropTypes.bool.isRequired,
-};
-
-HeaderIcon.defaultProps = {
-  isSelected: false,
+  iconName: PropTypes.string.isRequired,
+  inputRange: PropTypes.array.isRequired,
+  outputRange: PropTypes.array.isRequired,
+  outputRangeColor: PropTypes.array.isRequired,
+  position: PropTypes.object.isRequired,
 };
 
 export default HeaderIcon;

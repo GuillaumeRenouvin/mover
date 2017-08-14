@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import { StyleSheet, Text, View } from 'react-native';
-import { Page } from 'mover/src/components';
+import { Header, Page } from 'mover/src/components';
 import appStyle from 'mover/src/appStyle';
-import { Header, CardDisplayer } from 'mover/src/components';
+import { CardDisplayer } from './components';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,29 +24,20 @@ const styles = StyleSheet.create({
 });
 
 class Home extends Component {
-  static navigationOptions = {
-    title: 'Home',
-  };
-  state = {
-    movies: []
-  };
-  props: PropsType;
-
   componentWillMount() {
-    this.setState({
-      movies: this.props.movies
-    });
+    this.props.loadMovies();
   }
 
   render() {
     return (
-      <Page>
+      <Page noMargin>
         <CardDisplayer
           style={{flex: 1}}
           cards={this.props.movies}
           swipeRight={(movie) => this.props.addUserMovie(movie)}
           removeCard={() => this.props.removeMovie()}
           loadCards={() => this.props.loadMovies()}
+          onClickCard={(movie) => this.props.navigation.navigate('movieDetail', {movie})}
         />
       </Page>
     );
@@ -54,7 +45,7 @@ class Home extends Component {
 }
 
 Home.navigationOptions = {
-  tabBarVisible: false,
+  header: () => null,
 };
 
 Home.PropTypes = {

@@ -1,15 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { NativeModules, StyleSheet, View, LayoutAnimation, Dimensions } from "react-native";
-import { getCurrentRoute } from "mover/src/services/navigation";
+import { StyleSheet, View, Dimensions, Animated } from "react-native";
+import _ from 'lodash';
 import { HeaderIcon } from ".";
-
-const { UIManager } = NativeModules;
-UIManager.setLayoutAnimationEnabledExperimental &&
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-const iconHome = require('mover/src/assets/icon-home.jpg');
-const iconMovies = require('mover/src/assets/icon-movies.png');
-const iconSettings = require('mover/src/assets/icon-settings.png');
 
 const Screen = Dimensions.get('window');
 
@@ -23,68 +16,56 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   iconContainer: {
-    marginLeft: Screen.width / 2 - 45
+    marginLeft: Screen.width / 2 - 37
   }
 });
 
 class Header extends Component {
-  state = {
-    selectedPage: 'home',
-    marginLeftContainer: 0
-  }
-
-  componentWillMount() {
-    // DEPRECATED
-    if(getCurrentRoute(this.props.navigation.state) === 'movies') {
-      this.setState({
-        selectedPage: 'movies'
-      });
-      this.animateHeader('movies');
-    }
-  }
-
-  selectPage(page) {
-    if(page != this.state.selectedPage) {
-      this.setState({
-        selectedPage: page
-      });
-      this.props.navigation.navigate(page);
-      this.animateHeader(page);
-    }
-  }
-
-  animateHeader(page) {
-    LayoutAnimation.easeInEaseOut();
-    let marginLeftContainer = 0
-    switch(page) {
-      case "settings" :
-        marginLeftContainer = Screen.width / 2 - 25;
-        break;
-      case "movies" :
-        marginLeftContainer = -Screen.width / 2 + 25;
-        break;
-    }
-    this.setState({marginLeftContainer})
-  }
-
-  isSelectedPage(page) {
-    return this.state.selectedPage == page;
-  }
-
   render() {
     return (
-      <View style={{backgroundColor: 'white'}}>
-        <View style={[styles.headerContainer, {marginLeft: this.state.marginLeftContainer}]}>
+      <View style={{backgroundColor: 'white', height: 60}}>
+        <Animated.View
+          style={[
+            styles.headerContainer,
+            {transform: [{
+              translateX: this.props.position.interpolate({
+                inputRange: [0, 2],
+                outputRange: [Screen.width / 2 - 25, -Screen.width / 2 + 25]
+              })
+            }]}
+          ]}
+        >
           <View>
-            <HeaderIcon onPress={() => this.selectPage("settings")} icon={iconSettings} isSelected={this.isSelectedPage("settings")} />
+            <HeaderIcon
+              onPress={() => this.props.navigation.navigate("settings")}
+              iconName={'cog'}
+              inputRange={[0, 1, 2]}
+              outputRange={[2, 1, 1]}
+              outputRangeColor={['#ff3232', '#aaaaaa', '#aaaaaa']}
+              position={this.props.position}
+            />
           </View>
           <View style={styles.iconContainer}>
-            <HeaderIcon onPress={() => this.selectPage("home")} icon={iconHome} isSelected={this.isSelectedPage("home")} />
+            <HeaderIcon
+              onPress={() => this.props.navigation.navigate("home")}
+              iconName={'home'}
+              inputRange={[0, 1, 2]}
+              outputRange={[1, 2, 1]}
+              outputRangeColor={['#aaaaaa', '#ff3232', '#aaaaaa']}
+              position={this.props.position}
+            />
           </View>
           <View style={styles.iconContainer}>
-            <HeaderIcon onPress={() => this.selectPage("movies")} icon={iconMovies} isSelected={this.isSelectedPage("movies")} />
+            <HeaderIcon
+              onPress={() => this.props.navigation.navigate("movies")}
+              iconName={'caret-square-o-right'}
+              inputRange={[0, 1, 2]}
+              outputRange={[1, 1, 2]}
+              outputRangeColor={['#aaaaaa', '#aaaaaa', '#ff3232']}
+              position={this.props.position}
+            />
           </View>
-        </View>
+        </Animated.View>
       </View>
     );
   }
@@ -92,6 +73,7 @@ class Header extends Component {
 
 Header.propTypes = {
   navigation: PropTypes.object.isRequired,
+  position: PropTypes.object.isRequired,
 };
 
 export default Header;

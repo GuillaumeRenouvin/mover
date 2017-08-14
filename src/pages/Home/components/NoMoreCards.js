@@ -11,10 +11,6 @@ const styles = StyleSheet.create({
 });
 
 class NoMoreCards extends Component {
-  componentWillMount() {
-    this.props.loadCards();
-  }
-
   render() {
     return (
       <View>
@@ -22,10 +18,6 @@ class NoMoreCards extends Component {
       </View>
     )
   }
-};
-
-NoMoreCards.propTypes = {
-  loadCards: PropTypes.func.isRequired,
 };
 
 export default NoMoreCards;

@@ -4,54 +4,41 @@ import { connect } from "react-redux";
 import { addNavigationHelpers, TabNavigator, StackNavigator } from "react-navigation";
 import * as Pages from "mover/src/pages";
 import { Header } from "mover/src/components";
-import { getCurrentRoute } from "mover/src/services/navigation";
 
 export const AppNavigator = StackNavigator({
   tab: {
     screen: TabNavigator({
-      home: {
-        screen: Pages.Home,
-      },
       settings: {
         screen: Pages.Settings,
       },
+      home: {
+        screen: Pages.Home,
+      },
       movies: {
-        screen: StackNavigator({
-          movies: {
-            screen: Pages.Movies,
-          },
-          movieDetail: {
-            screen: Pages.MovieDetail,
-          },
-        }, {
-          headerMode: 'screen',
-          navigationOptions: {
-            headerStyle: {
-              backgroundColor: 'white',
-              shadowRadius: 0,
-              shadowOffset: {
-                  height: 0,
-              },
-            },
-            headerTintColor: 'black'
-          }
-        })
-      }
+        screen: Pages.Movies,
+      },
     }, {
       initialRouteName: 'home',
       tabBarPosition: 'top',
-      //swipeEnabled: true,
+      swipeEnabled: true,
+      animationEnabled: true,
+      tabBarComponent: ({navigation, position}) => <Header navigation={navigation} position={position} />
     })
-  }
+  },
+  movieDetail: {
+    screen: Pages.MovieDetail,
+  },
 }, {
   navigationOptions: {
-    header: ({ navigation }) => {
-      // DEPRECATED
-      return getCurrentRoute(navigation.state) != 'movieDetail' ?
-        <Header navigation={navigation} /> :
-        null;
+    headerStyle: {
+      backgroundColor: 'white',
+      shadowRadius: 0,
+      shadowOffset: {
+          height: 0,
+      },
     },
-  },
+    headerTintColor: 'black'
+  }
 });
 
 const AppWithNavigationState = ({ dispatch, nav }) =>

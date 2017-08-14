@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginLeft: 10,
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: '500',
     marginTop: 10,
   }
@@ -52,8 +52,7 @@ class Movies extends Component {
 }
 
 Movies.navigationOptions = {
-  tabBarVisible: false,
-  header: () => null
+  header: () => null,
 };
 
 Movies.PropTypes = {

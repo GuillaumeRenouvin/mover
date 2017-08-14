@@ -17,7 +17,7 @@ const themoviedb = {
   },
 
   getCoverUrl(url) {
-    return `https://image.tmdb.org/t/p/w1280${url}`;
+    return `https://image.tmdb.org/t/p/w500${url}`;
   }
 }
 
