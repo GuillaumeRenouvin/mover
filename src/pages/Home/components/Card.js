@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 import React, { Component } from 'react';
 import Interactable from 'react-native-interactable';
 import themoviedb from "mover/src/services/themoviedb";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Screen = Dimensions.get('window');
 const cardWidth = 340;
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
   },
   thumbnail: {
     width: cardWidth,
-    height: 460,
+    height: 500,
   },
   text: {
     fontSize: 20,
@@ -53,11 +54,25 @@ const styles = StyleSheet.create({
     fontSize: 60,
     color: 'white'
   },
-  text: {
+  titleText: {
     textAlign: 'center',
     marginTop: 4,
     fontSize: 18,
-    fontWeight: 'bold',
+    color: 'black',
+    margin: 5
+  },
+  text: {
+    textAlign: 'center',
+    marginTop: 4,
+    fontSize: 15,
+    color: 'grey',
+    margin: 5
+  },
+  textGenres: {
+    textAlign: 'center',
+    marginTop: 4,
+    fontSize: 15,
+    fontStyle: 'italic',
     color: 'grey',
     margin: 5
   },
@@ -80,6 +95,7 @@ class Card extends Component {
   }
 
   render() {
+    console.log(this.props.movie);
     return (
       <Interactable.View
         style={[{zIndex: this.props.zIndex}, this.props.style, styles.container]}
@@ -108,7 +124,27 @@ class Card extends Component {
               style={styles.thumbnail}
               source={{uri: themoviedb.getCoverUrl(this.props.movie.poster_path)}}
             />
-            <Text style={styles.text} numberOfLines={1} >{this.props.movie.original_title}</Text>
+            <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={styles.titleText} numberOfLines={1} >{this.props.movie.original_title}</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center', marginRight: 5}}>
+                <Text style={styles.titleText} >{this.props.movie.vote_average}</Text>
+                <Icon
+                  name='star'
+                  size={19}
+                />
+              </View>
+            </View>
+            <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+              <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 5}}>
+                <Icon
+                  name='calendar'
+                  size={19}
+                  color='grey'
+                />
+                <Text style={styles.text} numberOfLines={1} >{this.props.movie.release_date.substring(0, 4)}</Text>
+              </View>
+              <Text style={styles.textGenres} numberOfLines={1} >{this.props.movie.genres.join('/')}</Text>
+            </View>
           </View>
 
           <Animated.View style={[styles.overlay, {backgroundColor: '#2f9a5d'}, {

@@ -37,10 +37,12 @@ class CardDisplayer extends Component {
     const previousLastCardNumber = this.cardsNumber;
     for(i = previousLastCardNumber; i < CARDS_TO_DISPLAY; i++) {
       if(this.props.cards[i]) {
+        let movieToDisplay = {...this.props.cards[i]};
+        movieToDisplay.genres = this.props.getArrayIdGenres(movieToDisplay.genre_ids);
         this.row.unshift(
           <Card
-            key={this.props.cards[i].id}
-            movie={this.props.cards[i]}
+            key={movieToDisplay.id}
+            movie={movieToDisplay}
             swipeRight={(movie) => this.props.swipeRight(movie)}
             removeCard={() => {
               this.cardsNumber--;
@@ -69,10 +71,6 @@ class CardDisplayer extends Component {
             <NoMoreCards />
           }
         </View>
-        <View style={{marginBottom: 40, flex: 0}}>
-         <Text style={styles.text}>Swipe LEFT to trash</Text>
-         <Text style={styles.text}>or RIGHT to keep</Text>
-        </View>
      </View>
     );
   }
@@ -84,6 +82,7 @@ CardDisplayer.propTypes = {
   removeCard: PropTypes.func.isRequired,
   loadCards: PropTypes.func.isRequired,
   onClickCard: PropTypes.func.isRequired,
+  getArrayIdGenres: PropTypes.func.isRequired,
 };
 
 export default CardDisplayer;

@@ -23,6 +23,19 @@ export function* loadMovies(action) {
   }
 }
 
+export function* loadGenres(action) {
+  try {
+    const genres = yield call(themoviedb.loadGenres);
+    
+    yield put({
+      type: actionTypes.loadGenresSuccessAction,
+      genres: genres.genres
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export function* removeMovie(action) {
   const CARD_REFRESH_LIMIT = 10;
   try {
@@ -42,11 +55,16 @@ function* loadMoviesSaga() {
   yield* takeEvery(actionTypes.loadMoviesAction, loadMovies);
 }
 
+function* loadGenresSaga() {
+  yield* takeEvery(actionTypes.loadGenresAction, loadGenres);
+}
+
 function* removeMovieSaga() {
   yield* takeEvery(actionTypes.removeMovieAction, removeMovie);
 }
 
 export function* movieSaga(): * {
   yield fork(loadMoviesSaga);
+  yield fork(loadGenresSaga);
   yield fork(removeMovieSaga);
 }

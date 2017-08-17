@@ -16,6 +16,20 @@ const themoviedb = {
     })
   },
 
+  loadGenres() {
+    return fetch(
+      `${themoviedb.url}/genre/movie/list?api_key=${themoviedb.token}&language=en-US`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+    .then((response) => {
+      return response.json();
+    })
+  },
+
   getCoverUrl(url) {
     return `https://image.tmdb.org/t/p/w500${url}`;
   }

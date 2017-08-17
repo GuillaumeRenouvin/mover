@@ -5,6 +5,7 @@ import { Page } from 'mover/src/components';
 import Carousel from 'react-native-looped-carousel';
 import Lightbox from 'react-native-lightbox';
 import themoviedb from "mover/src/services/themoviedb";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const styles = StyleSheet.create({
   cover: {
@@ -17,10 +18,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: '500'
-  },
   content: {
     fontSize: 13,
     color: 'gray'
@@ -29,7 +26,30 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 15,
     textAlign: 'justify'
-  }
+  },
+  titleText: {
+    textAlign: 'center',
+    marginTop: 4,
+    fontSize: 20,
+    fontWeight: '500',
+    color: 'black',
+    margin: 5
+  },
+  text: {
+    textAlign: 'center',
+    marginTop: 4,
+    fontSize: 15,
+    color: 'grey',
+    margin: 5
+  },
+  textGenres: {
+    textAlign: 'center',
+    marginTop: 4,
+    fontSize: 15,
+    fontStyle: 'italic',
+    color: 'grey',
+    margin: 5
+  },
 });
 
 class MovieDetail extends Component {
@@ -37,7 +57,7 @@ class MovieDetail extends Component {
     return (
       <Page noMargin >
         <Carousel
-          delay={5000}
+          delay={2500}
           autoplay
           style={{flex: 1}}
           pageInfo
@@ -51,8 +71,27 @@ class MovieDetail extends Component {
           </Lightbox>
         </Carousel>
         <ScrollView style={styles.contentContainer}>
-          <Text style={styles.title} >{this.props.movie.original_title}</Text>
-          <Text style={styles.content} >{this.props.movie.release_date} - {this.props.movie.vote_average}/10</Text>
+          <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={styles.titleText} >{this.props.movie.original_title}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginRight: 5}}>
+              <Text style={styles.titleText} >{this.props.movie.vote_average}</Text>
+              <Icon
+                name='star'
+                size={19}
+              />
+            </View>
+          </View>
+          <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 5}}>
+              <Icon
+                name='calendar'
+                size={19}
+                color='grey'
+              />
+              <Text style={styles.text} >{this.props.movie.release_date.substring(0, 4)}</Text>
+            </View>
+            <Text style={styles.textGenres} >{this.props.movie.genres.join('/')}</Text>
+          </View>
           <Text style={styles.overview} >{this.props.movie.overview}</Text>
         </ScrollView>
       </Page>

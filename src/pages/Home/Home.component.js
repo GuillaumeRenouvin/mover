@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
 
 class Home extends Component {
   componentWillMount() {
+    this.props.loadGenres();
     this.props.loadMovies();
   }
 
@@ -37,6 +38,7 @@ class Home extends Component {
           swipeRight={(movie) => this.props.addUserMovie(movie)}
           removeCard={() => this.props.removeMovie()}
           loadCards={() => this.props.loadMovies()}
+          getArrayIdGenres={(genre_ids) => this.props.getArrayIdGenres(genre_ids)}
           onClickCard={(movie) => this.props.navigation.navigate('movieDetail', {movie})}
         />
       </Page>
@@ -53,7 +55,8 @@ Home.PropTypes = {
   movies: PropTypes.array.isRequired,
   loadMovies: PropTypes.array.isRequired,
   addUserMovie: PropTypes.func.isRequired,
-  removeMovie: PropTypes.func.isRequired
+  removeMovie: PropTypes.func.isRequired,
+  getArrayIdGenres: PropTypes.func.isRequired,
 };
 
 export default Home;
