@@ -54,6 +54,7 @@ Home.PropTypes = {
   navigation: PropTypes.object.isRequired,
   movies: PropTypes.array.isRequired,
   loadMovies: PropTypes.array.isRequired,
+  loadGenres: PropTypes.array.isRequired,
   addUserMovie: PropTypes.func.isRequired,
   removeMovie: PropTypes.func.isRequired,
   getArrayIdGenres: PropTypes.func.isRequired,

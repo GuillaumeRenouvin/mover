@@ -95,7 +95,6 @@ class Card extends Component {
   }
 
   render() {
-    console.log(this.props.movie);
     return (
       <Interactable.View
         style={[{zIndex: this.props.zIndex}, this.props.style, styles.container]}

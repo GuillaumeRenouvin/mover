@@ -5,6 +5,9 @@ const initialState = {
   movies: [],
   seenMovies: [],
   pageIndex: 0,
+  configuration: {
+    genreIds: []
+  }
 };
 
 // ACTION TYPES
@@ -15,6 +18,8 @@ export const actionTypes = {
   removeUserSeenMovieSuccessAction: 'REMOVE_USER_SEEN_MOVIE_SUCCESS_ACTION',
   incrementPageIndexAction: 'INCREMENT_PAGE_INDEX_ACTION',
   resetPageIndexAction: 'RESET_PAGE_INDEX_ACTION',
+  addGenreIdsAction: 'ADD_GENRE_IDS_ACTION',
+  removeGenreIdsAction: 'REMOVE_GENRE_IDS_ACTION',
 };
 
 // REDUCER
@@ -51,6 +56,25 @@ export function userReducer(state = initialState, action: Object) {
         ...state,
         pageIndex: 0,
       };
+    case actionTypes.addGenreIdsAction:
+      let genreIds = _.cloneDeep(state.configuration.genreIds);
+      genreIds.push(action.genreId);
+
+      return {
+        ...state,
+        configuration: {
+          ...state.configuration,
+          genreIds: genreIds,
+        }
+      };
+    case actionTypes.removeGenreIdsAction:
+      return {
+        ...state,
+        configuration: {
+          ...state.configuration,
+          genreIds: _.filter(state.configuration.genreIds, (genreId) => {return genreId != action.genreId}),
+        }
+      };
     case REHYDRATE: return action.payload.authenticate || state;
     default:
       return state;
@@ -76,4 +100,14 @@ export const addUserSeenMovieCreator = (movie) => ({
 export const removeUserSeenMovieCreator = (movie) => ({
   type: actionTypes.removeUserSeenMovieSuccessAction,
   movie
+});
+
+export const addGenreIdsCreator = (genreId) => ({
+  type: actionTypes.addGenreIdsAction,
+  genreId
+});
+
+export const removeGenreIdsCreator = (genreId) => ({
+  type: actionTypes.removeGenreIdsAction,
+  genreId
 });
